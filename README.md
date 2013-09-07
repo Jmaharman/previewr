@@ -19,6 +19,7 @@ Initially setup to fulfill my needs of fast prototyping with as much code re-use
 
 - [x] Create previewr as a disposable tool to development
 - [] Use previewr as middleware in your own server
+- [] Create previewr example config based off questions asked to user
 - [] Live reload when editing any content touched with previewr
 - [] Setup binding of JSON to HTML with swappable templating engines
 - [] Setup tests with CI server for latest releases going live
