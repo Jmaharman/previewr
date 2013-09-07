@@ -1,29 +1,38 @@
-var express = require('express'),
-  app = express(),
-  cheerio = require('cheerio'),
-  jsonDeets = require('./static/previewr'),
-  previewr = require('./lib/previewr');
+#! /usr/bin/env node
 
-app.use(express.static('static'));
+var c = require('commander'),
+  Previewr = require('./lib/previewr'),
+  _ = require('underscore'),
+  fs = require('fs'),
+  path = require('path'),
+  isCli = (require.main === module),
+  defaults = require('./lib/defaults');
 
-app.get('/*', function(req, res, next){
-  var urlDetails = req.url.substring(1);
+// Exported in case anyone wishes to use Previewr directly.
+module.exports = exports = Previewr;
 
-  previewr(urlDetails.replace(/\//g, '.'), jsonDeets, function(err, html) {
-    if (err && err.indexOf('Flow not found') !== 0) {
-      res.statusCode = 500;
-      return next();
+// Otherwise, BOOM, straight into the cmd
+if (isCli) {
+
+    var localConfigPath = path.join(path.normalize(defaults.dir), '/.previewr-config.json');
+    if (fs.existsSync(localConfigPath)) {
+      var localConfig = require(localConfigPath);
+      defaults = _.extend(defaults, localConfig);
     }
 
-    if (html === null) {
-      res.statusCode = 404;
-      console.info('Flow for URL not found: ' + req.url);
-    }
-    else
-      res.send(html);
+    c
+      .version('0.0.1')
+      .option('-d, --dir [dirname]', 'config directory [dirname] | default cwd')
+      .option('-r, --root [rootfolder]', 'load files from [rootfolder] | default cwd')
+      .option('-p, --port [num]', 'serve on port [num] | default 61403', parseInt)
+      .option('-v, --verbose', 'log connections to console | default off')
+      .parse(process.argv);
 
-    next();
-  });
-});
+    var cliOptions = {};
+    if (c.dir !== undefined) cliOptions.dir = c.dir;
+    if (c.root !== undefined) cliOptions.root = c.root;
+    if (c.port !== undefined) cliOptions.port = c.port;
+    if (c.verbose !== undefined) cliOptions.verbose = c.verbose;
 
-app.listen(3000);
+    new Previewr(cliOptions).start();
+}
