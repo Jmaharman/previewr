@@ -34,5 +34,5 @@ if (isCli) {
     if (c.port !== undefined) cliOptions.port = c.port;
     if (c.verbose !== undefined) cliOptions.verbose = c.verbose;
 
-    new Previewr(cliOptions).start();
+    var previewr = new Previewr(cliOptions).start();
 }
