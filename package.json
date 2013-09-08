@@ -1,6 +1,6 @@
 {
   "name": "previewr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A disposable dynamic site builder for fast front-end iterations that promotes code re-use to build the front-end of your site / web app.",
   "main": "index.js",
   "bin": {
