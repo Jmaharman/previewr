@@ -16,7 +16,7 @@
     "express": "~3.3.4",
     "underscore": "~1.5.1",
     "commander": "~2.0.0",
-    "previewr-flow": "0.0.1"
+    "previewr-flow": "0.0.3"
   },
   "devDependencies": {
     "mocha": "~1.12.0"
